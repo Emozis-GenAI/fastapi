@@ -13,7 +13,7 @@ mongodb.set_collection("user")
 router = APIRouter()
 
 @router.post("/register", summary="회원가입")
-async def signup(user: RegisterData):
+async def register(user: RegisterData):
     # 비밀번호 해시
     user.hash_password()
 
@@ -27,10 +27,13 @@ async def signup(user: RegisterData):
     # UserData에 맞춰 DB 삽입
     else:
         try:
-            insert_data = user.dict()
-            insert_data["createDate"] = datetime.now()
-            insert_data["currentDate"] = None
-            response = await mongodb.insert(insert_data)
+            insert_data = UserData(
+                **user.dict(),
+                createDate=datetime.now(),
+                currentDate=None
+            )
+            print(insert_data)
+            response = await mongodb.insert(insert_data.dict())
             return SuccessResponse(message=f"✅ Success Create User Data: {user.username}")
         except Exception as e:
             return ErrorResponse(message=f"❌ Failed Create User Data: {e}")

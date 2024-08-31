@@ -42,17 +42,12 @@ class LoginData(BaseModel):
         }
 
 # DB에 넣을 때 데이터
-class UserData(BaseModel):
+class UserData(RegisterData):
     username: str
     nickname: str
     password: str 
     createDate: datetime 
     currentDate: Optional[datetime]
-
-    class Config:
-        json_encoders = {
-            datetime: format_datetime_kst
-        }
 
 # 프론트에 전달해주는 데이터
 class UserResponseData(BaseModel):

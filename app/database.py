@@ -147,7 +147,7 @@ class MongoDB:
 
         try:
             query = {"_id": ObjectId(id)}
-            res = await self.collection.update_one(query, {"$set": new_data})
+            await self.collection.update_one(query, {"$set": new_data})
             logger.info(f"⚙️ Update SUCCESS: {id}")
         except Exception as e:
             logger.warning(f"RETRIEVE ERROR: {e}")
