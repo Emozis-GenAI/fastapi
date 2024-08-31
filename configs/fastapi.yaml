@@ -1,0 +1,17 @@
+fastapi:
+  title: "Emozis-GenAI"
+  version: "0.0.1"
+  summary: "Primer hackathon을 위한 Emozis 서브 프로젝트"
+  description: "참고 사이트: https://hack.primer.kr/"
+  contact:
+    name: "Emozis"
+    email: "narae3759@gmail.com"
+  openapi_tags:
+    - name: "user"
+      description: "유저 정보"
+    - name: "character"
+      description: "캐릭터 정보"
+    - name: "chatroom"
+      description: "채팅방"
+    - name: "chat_history"
+      description: "채팅 히스토리"
