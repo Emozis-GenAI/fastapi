@@ -9,9 +9,11 @@ fastapi:
   openapi_tags:
     - name: "user"
       description: "유저 정보"
+    - name: "profile"
+      description: "프로필 이미지 정보"
     - name: "character"
       description: "캐릭터 정보"
     - name: "chatroom"
       description: "채팅방"
-    - name: "chat_history"
+    - name: "chatting"
       description: "채팅 히스토리"
