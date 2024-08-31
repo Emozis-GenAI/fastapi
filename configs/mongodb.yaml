@@ -1,0 +1,5 @@
+mongodb:
+  host: "cluster0.urikuvt.mongodb.net"
+  userKey: "MONGODB_USERNAME"
+  pwdKey: "MONGODB_PASSWORD"
+  database: "primer"

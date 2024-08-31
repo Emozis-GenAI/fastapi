@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import configs
 from app.api.v1.api import api_router
+from app.database import mongodb 
 
 app = FastAPI(**configs.fastapi)
 app.include_router(api_router)
@@ -18,6 +19,10 @@ app.add_middleware(
     allow_methods=["*"],        # 허용할 메서드 리스트 
     allow_headers=["*"]         # 허용할 HTTP 헤더
 )
+
+@app.on_event("startup")
+async def startup_db_client():
+    await mongodb.connect()
 
 @app.get("/")
 def root():
