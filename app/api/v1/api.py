@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import user, profile, character, chatroom, chatting
+from app.api.v1.endpoints import (
+    user, profile, character, chatroom, chatting, collection)
 
 api_router = APIRouter()
 
@@ -32,4 +33,10 @@ api_router.include_router(
     router=chatting.router,
     prefix="/chatting",
     tags=["chatting"]
+)
+
+api_router.include_router(
+    router=collection.router,
+    prefix="/collection",
+    tags=["collection"]
 )

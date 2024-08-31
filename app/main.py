@@ -31,3 +31,5 @@ def root():
 @app.post("/chat", summary="AI 답변을 생성합니다")
 def chat():
     return {"hello": "Python"}
+
+

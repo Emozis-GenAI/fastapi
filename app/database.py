@@ -27,16 +27,48 @@ class MongoDB:
     async def connect(self):
         try:
             await self.client.server_info()
-            logger.info("Success Connect Client")
+            logger.info("Success Connect MongoDB Client")
 
             db_list = await self.client.list_database_names()
             if db_name in db_list:
                 self.db = self.client.get_database(db_name)
-                logger.info("Success Get Database")
+                logger.info(f"Success Get Database: {db_name}")
             else:
                 logger.warning(f"{db_name} is not in database list")
         except Exception as e:
             logger.warning(f"Connect Failed Client: {e}")
+
+    # Collection CRD
+    async def manage_collection(self, collection_name=None, method="get"):
+        collection_list = await self.db.list_collection_names()
+        if method == "get":
+            return collection_list
+        if method == "create":
+            if collection_name not in collection_list:
+                try:
+                    await self.db.create_collection(collection_name)
+                    message = f"🪄 Create Collection: {collection_name}"
+                    logger.info(message)
+                except Exception as e:
+                    message = f"Failed Create Collection: {e}"
+                    logger.warning(message)
+            else:
+                message = f"❌ 이미 존재하는 Collection 입니다."
+                logger.warning(message)
+        elif method == "drop":
+            if collection_name in collection_list:
+                try:
+                    await self.db.drop_collection(collection_name)
+                    message = f"🗑️ Drop Collection: {collection_name}"
+                    logger.info(message)
+                except Exception as e:
+                    message = f"Failed Drop Collection: {e}"
+                    logger.info(message)
+            else:
+                message = f"❌ Collection이 존재하지 않습니다."
+                logger.warning(f"❌ Collection이 존재하지 않습니다.")
+
+        return message
     
     # Collection 이름 설정
     def set_collection(self, collection_name):
