@@ -17,3 +17,5 @@ fastapi:
       description: "채팅방"
     - name: "chatting"
       description: "채팅 히스토리"
+    - name: "collection"
+      description: "MongoDB Collection"
