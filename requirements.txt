@@ -1,0 +1,9 @@
+fastapi[standard]
+uvicorn[standard]
+langchain
+langchain-upstage
+motor
+passlib 
+pymongo
+python-dotenv
+requests
