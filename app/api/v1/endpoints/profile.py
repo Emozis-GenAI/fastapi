@@ -4,14 +4,18 @@ from typing import List
 from app.database import mongodb
 from app.schema.profile import * 
 
-mongodb.set_collection("profile")
+collection_name = "profile"
 
 router = APIRouter()
 
 @router.get("/", summary="프로필 이미지를 조회합니다")
 async def get_profile():
+    # Collection 연결
+    await mongodb.get_collection(collection_name)
+
     try:
         data = await mongodb.find_all()
+        
         return ProfileResponse(
             message=f"✅ Success Retrieve Profile Data: {len(data)}",
             data=data
@@ -33,10 +37,22 @@ profile_example = [
 ]
 
 @router.post("/", summary="프로필 이미지를 추가합니다")
-async def get_profile(data: List[ProfileInsertData]=Body(...,example=profile_example)):
-    insert_data = [element.dict() for element in data]
+async def get_profile(data: List[ProfileData]=Body(...,example=profile_example)):
+    # Collection 연결
+    await mongodb.get_collection(collection_name)
+
     try:
-        response = await mongodb.insert(insert_data)
-        return SuccessResponse(message=f"✅ Success Add Profile Data: {len(response)}")
+        success = 0
+        fail = 0
+        for element in data:
+            query = {"img_url": element.img_url}
+            data = await mongodb.find_with_query(query)
+            if not data:
+                await mongodb.insert(insert_data)
+                success += 1
+            else:
+                fail += 1
+        
+        return SuccessResponse(message=f"✅ Success Add Profile Data: {success} (duplication: {fail})")
     except Exception as e:
         return ErrorResponse(message=f"❌ Failed Add Profile Data: {e}")
