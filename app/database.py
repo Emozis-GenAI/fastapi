@@ -116,7 +116,7 @@ class MongoDB:
             async for element in self.collection.find(query):
                 element["_id"] = str(element["_id"])
                 data.append(element)
-            logger.info(f"🔍 RETRIEVE SUCCESS: {data}")
+            logger.info(f"🔍 RETRIEVE SUCCESS: {len(data)}")
 
             if len(data) == 1:
                 return data[0]
