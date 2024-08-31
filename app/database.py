@@ -27,16 +27,16 @@ class MongoDB:
     async def connect(self):
         try:
             await self.client.server_info()
-            logger.info("Success Connect MongoDB Client")
+            logger.info("✅ Success Connect MongoDB Client")
 
             db_list = await self.client.list_database_names()
             if db_name in db_list:
                 self.db = self.client.get_database(db_name)
-                logger.info(f"Success Get Database: {db_name}")
+                logger.info(f"✅ Success Get Database: {db_name}")
             else:
                 logger.warning(f"{db_name} is not in database list")
         except Exception as e:
-            logger.warning(f"Connect Failed Client: {e}")
+            logger.warning(f"❌ Connect Failed Client: {e}")
 
     # Collection CRD
     async def manage_collection(self, collection_name=None, method="get"):
@@ -147,10 +147,8 @@ class MongoDB:
 
         try:
             query = {"_id": ObjectId(id)}
-            data = await self.collection.update_one(query, new_data)
-            data["_id"] = str(data["_id"])
-            logger.info(f"🔍 RETRIEVE SUCCESS: {data}")
-            return data  
+            res = await self.collection.update_one(query, {"$set": new_data})
+            logger.info(f"⚙️ Update SUCCESS: {id}")
         except Exception as e:
             logger.warning(f"RETRIEVE ERROR: {e}")
 
