@@ -10,17 +10,17 @@ class Age(str, Enum):
     MIDDLE = "middle_age"
     ELDERLY = "elderly"
 
-class ProfileInsertData(BaseModel):
+class ProfileData(BaseModel):
     img_url: str 
     gender: Gender 
     age: Age
 
-class ProfileData(ProfileInsertData):
-    _id: str
+class ProfileResponseData(ProfileData):
+    id: str = Field(..., alias="_id")
 
 class ProfileResponse(BaseModel):
     status: str = Field(default=Status.SUCCESS)
     message: str
-    data: List[ProfileData]
+    data: List[ProfileResponseData]
 
 

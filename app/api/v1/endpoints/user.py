@@ -8,12 +8,15 @@ from app.schema.user import *
 from passlib.context import CryptContext 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto") 
 
-mongodb.set_collection("user")
+collection_name = "profile"
 
 router = APIRouter()
 
 @router.post("/register", summary="회원가입")
 async def register(user: RegisterData):
+    # Collection 연결
+    await mongodb.get_collection(collection_name)
+
     # 비밀번호 해시
     user.hash_password()
 
@@ -41,6 +44,9 @@ async def register(user: RegisterData):
 
 @router.post("/login", summary="로그인")
 async def login(user: LoginData):
+    # Collection 연결
+    await mongodb.get_collection(collection_name)
+
     # ID 조회
     query = {"username": user.username}
     data = await mongodb.find_with_query(query)

@@ -56,7 +56,9 @@ class CharacterReponseData(CharacterData):
                 "user": {
                     "username": "user123",
                     "nickname": "apple"
-                }
+                },
+                "createDate": "생성날짜",
+                "userCount": "사용 횟수"
             }
         }
 

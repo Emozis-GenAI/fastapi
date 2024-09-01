@@ -34,10 +34,10 @@ class ChatData(ChatRequestData):
     createDate: datetime
 
 class ChatResponseData(ChatData):
-    _id: str
+    id: str = Field(..., alias="_id")
 
 class ChatHistoryResponse(BaseModel):
     status: str = Field(default=Status.SUCCESS)
     message: str
-    data: List[ChatData]
+    data: List[ChatResponseData]
 

@@ -23,7 +23,7 @@ async def get_character():
         return ErrorResponse(message=f"❌ Failed Retrieve Character Data: {e}")
 
 
-@router.get("/", summary="특정 캐릭터 정보를 조회합니다")
+@router.get("/user", summary="특정 유저가 만든 캐릭터 정보를 조회합니다")
 async def get_character_one(user: UserResponseData):
     # Collection 연결
     await mongodb.get_collection(collection_name)
