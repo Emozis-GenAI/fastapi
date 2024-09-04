@@ -1,0 +1,3 @@
+langchain:
+  model: "openai" # upstage
+  temperature: 0.3
