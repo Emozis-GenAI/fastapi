@@ -6,6 +6,10 @@ from pydantic import BaseModel, Field
 from app.schema.default import *
 from app.schema.user import *
 
+class CharacterCountRequestData(BaseModel):
+    id: str
+    userCount: int
+
 class CharacterRequestData(BaseModel):
     name: str
     profile: str 
@@ -35,10 +39,12 @@ class CharacterRequestData(BaseModel):
         }
 
 class CharacterData(CharacterRequestData):
+    summary: str
     createDate: datetime 
+    updateDate: Optional[datetime] = None
     userCount: int
 
-class CharacterReponseData(CharacterData):
+class CharacterResponseData(CharacterData):
     id: str = Field(..., alias="_id")
 
     class Config:
@@ -53,17 +59,21 @@ class CharacterReponseData(CharacterData):
                 "personality": "성격",
                 "details": "세부사항",
                 "greeting": "첫인사",
+                "summary": "한줄요약",
                 "user": {
                     "username": "user123",
                     "nickname": "apple"
                 },
                 "createDate": "생성날짜",
+                "updateDate": "수정날짜",
                 "userCount": "사용 횟수"
             }
         }
+        # alias 허용
+        populate_by_name = True
 
-class CharacterReponse(BaseModel):
+class CharacterResponse(BaseModel):
     status: str = Field(default=Status.SUCCESS)
     message: str
-    data: List[CharacterReponseData]
+    data: List[CharacterResponseData]
     

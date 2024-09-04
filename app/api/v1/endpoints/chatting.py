@@ -7,14 +7,17 @@ collection_name = "chatting"
 
 router = APIRouter()
 
-@router.get("/{chatroom_id}", summary="특정 채팅방 대화 히스토리를 조회합니다")
-async def get_chat_history(chatroom_id: str):
+@router.get("/chatroom", summary="특정 채팅방 대화 히스토리를 조회합니다")
+async def get_chat_history(chatroom: ChatroomChatRequest):
     # Collection 연결
     await mongodb.get_collection(collection_name)
 
     try:
-        query = {"chatroom_id": chatroom_id}
+        query = {"chatroom": chatroom.dict()}
         data = await mongodb.find_with_query(query)
+
+        if isinstance(data, dict):
+            data = [data]
         
         return ChatHistoryResponse(
             message=f"✅ Success Retrieve Chat History: {len(data)}",
