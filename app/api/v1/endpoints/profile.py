@@ -23,6 +23,24 @@ async def get_profile():
     except Exception as e:
         return ErrorResponse(message=f"❌ Failed Retrieve Profile Data: {e}")
 
+@router.get("/{gender}", summary="그룹별 프로필 이미지를 조회합니다")
+async def get_profile(gender: Gender):
+    # Collection 연결
+    await mongodb.get_collection(collection_name)
+
+    try:
+        query = {"gender": gender}
+        data = await mongodb.find_with_query(query)
+        
+        return ProfileResponse(
+            message=f"✅ Success Retrieve Profile Data: {len(data)}",
+            data=data
+        )
+    except Exception as e:
+        return ErrorResponse(message=f"❌ Failed Retrieve Profile Data: {e}")
+
+
+
 profile_example = [
     {
         "img_url": "...",
@@ -48,7 +66,7 @@ async def get_profile(data: List[ProfileData]=Body(...,example=profile_example))
             query = {"img_url": element.img_url}
             data = await mongodb.find_with_query(query)
             if not data:
-                await mongodb.insert(insert_data)
+                await mongodb.insert(element.dict())
                 success += 1
             else:
                 fail += 1

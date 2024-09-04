@@ -8,7 +8,7 @@ from app.schema.user import *
 from passlib.context import CryptContext 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto") 
 
-collection_name = "profile"
+collection_name = "user"
 
 router = APIRouter()
 
@@ -35,7 +35,6 @@ async def register(user: RegisterData):
                 createDate=datetime.now(),
                 currentDate=None
             )
-            print(insert_data)
             response = await mongodb.insert(insert_data.dict())
             return SuccessResponse(message=f"✅ Success Create User Data: {user.username}")
         except Exception as e:

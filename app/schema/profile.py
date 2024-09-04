@@ -9,6 +9,7 @@ class Age(str, Enum):
     YOUTH = "youth"
     MIDDLE = "middle_age"
     ELDERLY = "elderly"
+    ETC = "etc"
 
 class ProfileData(BaseModel):
     img_url: str 

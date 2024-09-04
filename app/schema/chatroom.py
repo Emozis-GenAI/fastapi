@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from enum import Enum
 from datetime import datetime
 from pydantic import BaseModel, Field 
@@ -9,13 +9,14 @@ from app.schema.character import *
 
 class ChatroomRequestData(BaseModel):
     name: str
-    character: CharacterRequestData
+    character: CharacterResponseData
+    user: UserResponseData
 
     class Config:
         # 예시
         json_schema_extra = {
             "example": {
-                "name": "캐릭터 이름",
+                "name": "채팅방 이름",
                 "character": {
                     "_id": "고유 ID",
                     "name": "캐릭터 이름",
@@ -25,27 +26,33 @@ class ChatroomRequestData(BaseModel):
                     "personality": "성격",
                     "details": "세부사항",
                     "greeting": "첫인사",
+                    "summary": "한줄요약",
                     "user": {
                         "username": "user123",
                         "nickname": "apple"
                     },
                     "createDate": "생성날짜",
-                    "userCount": "사용 횟수"
+                    "updateDate": "수정날짜",
+                    "userCount": "사용 횟수",
+                },
+                "user": {
+                    "username": "사용자 ID",
+                    "nickname": "사용자 닉네임"
                 }
             }
         }
 
-class ChatroomData(CharacterRequestData):
+class ChatroomData(ChatroomRequestData):
     createDate: datetime 
 
-class ChatroomReponseData(ChatroomData):
+class ChatroomResponseData(ChatroomData):
     id: str = Field(..., alias="_id")
 
     class Config:
         # 예시
         json_schema_extra = {
             "example": {
-                "name": "캐릭터 이름",
+                "name": "채팅방 이름",
                 "character": {
                     "_id": "고유 ID",
                     "name": "캐릭터 이름",
@@ -66,8 +73,15 @@ class ChatroomReponseData(ChatroomData):
             }
         }
 
+        # alias 허용
+        populate_by_name = True
+
 class ChatroomResponse(BaseModel):
     status: str = Field(default=Status.SUCCESS)
     message: str
-    data: List[CharacterReponseData]
+    data: Union[str,List[ChatroomResponseData]] = []
+
+class ChatroomChatRequest(BaseModel):
+    id: str
+    name: str
     
